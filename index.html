@@ -108,6 +108,12 @@ button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:2px solid 
 .cl{stroke-dasharray:1;stroke-dashoffset:1}
 body.in .cl{animation:draw 4.2s .8s cubic-bezier(.45,0,.2,1) forwards}
 @keyframes draw{to{stroke-dashoffset:0}}
+.tr{opacity:0;transition:opacity 1.2s 5.4s}
+body.in .tr{opacity:.95;animation:trav 8s linear infinite}
+@keyframes trav{to{stroke-dashoffset:-1}}
+.ct{opacity:0;letter-spacing:.2px}
+body.in .ct{animation:ctin 2.4s 4.6s ease forwards}
+@keyframes ctin{to{opacity:.55}}
 .sp{transform-box:fill-box;transform-origin:center;animation:tw2 3.2s ease-in-out infinite alternate}
 @keyframes tw2{0%{opacity:.45;transform:scale(.7)}100%{opacity:1;transform:scale(1.1)}}
 .neb{transform-box:fill-box;transform-origin:center;animation:neb 7s ease-in-out infinite alternate}
@@ -351,7 +357,7 @@ body.dev .ph small{display:block}
 
 @media(max-width:860px){.mapwrap{grid-template-columns:1fr}.souv{grid-template-columns:1fr 1fr}.souv:before{display:none}}
 @media(max-width:640px){
- .const{top:3vh;right:4vw;width:140px}
+ .const{top:3vh;right:4vw;width:140px}.ct{display:none}
  .tmain{padding:0 1.3rem 1.2rem 1.5rem}.hd{margin:0 -1.3rem 1.3rem -1.5rem;padding:.8rem 1.3rem .8rem 1.5rem}
  .rt{gap:.7rem;grid-template-columns:minmax(0,auto) minmax(40px,1fr) minmax(0,auto)}.rt small{font-size:.56rem;letter-spacing:.08em}.ln2 em{display:none}
 
@@ -721,32 +727,52 @@ document.documentElement.style.setProperty('--arch', ap.map(p => p[0].toFixed(1)
 /* ===== constellation en forme de cœur ===== */
 (function () {
   const f = t => [16 * Math.pow(Math.sin(t), 3), -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t))];
-  /* 16 étoiles réparties sur le cœur, légèrement décalées pour un air de vraie constellation ; les plus brillantes aux pointes */
-  const N = 16, BIG = { 0: 1.5, 3: 1.25, 8: 1.8, 13: 1.25 };
-  const P = Array.from({ length: N }, (_, i) => { const q = f(i / N * 2 * Math.PI), j = i % 8 ? .55 : 0; return [q[0] + (rnd() - .5) * j, q[1] + (rnd() - .5) * j]; });
+  /* étoiles réparties à égale distance le long du cœur (en partant de la pointe du bas), pour un tracé régulier et sans amas */
+  const N = 22, M = 600, curve = Array.from({ length: M + 1 }, (_, k) => f(Math.PI + k / M * 2 * Math.PI)), cum = [0];
+  for (let k = 1; k <= M; k++) cum[k] = cum[k - 1] + Math.hypot(curve[k][0] - curve[k - 1][0], curve[k][1] - curve[k - 1][1]);
+  const at = L => { let k = 1; while (k < M && cum[k] < L) k++; const u = (L - cum[k - 1]) / ((cum[k] - cum[k - 1]) || 1); return [curve[k - 1][0] + (curve[k][0] - curve[k - 1][0]) * u, curve[k - 1][1] + (curve[k][1] - curve[k - 1][1]) * u]; };
+  const base = Array.from({ length: N }, (_, i) => at(cum[M] * i / N));
+  /* les plus brillantes : la pointe, le creux, le sommet de chaque lobe et le point le plus large de chaque côté */
+  const pick = (idx, fn) => idx.reduce((b, i) => fn(base[i]) < fn(base[b]) ? i : b, idx[0]);
+  const L = [...Array(N).keys()].filter(i => base[i][0] < -1), R = [...Array(N).keys()].filter(i => base[i][0] > 1);
+  const BIG = { 0: 1.9, [N / 2]: 1.2, [pick(L, p => p[1])]: 1.55, [pick(R, p => p[1])]: 1.55, [pick(L, p => p[0])]: 1.1, [pick(R, p => -p[0])]: 1.1 };
+  const P = base.map((q, i) => BIG[i] ? q : [q[0] + (rnd() - .5) * .5, q[1] + (rnd() - .5) * .5]);
+  const heart = 'M' + curve.filter((_, k) => k % 6 === 0).map(q => q[0].toFixed(2) + ' ' + q[1].toFixed(2)).join('L') + 'Z';
+  const tint = () => ['#fff', '#ffe6ee', '#e6eeff'][Math.floor(rnd() * 3)];
+  const star = (S, c) => `<path d="M0 ${-S * 1.3}Q0 0 ${S * 1.3} 0Q0 0 0 ${S * 1.3}Q0 0 ${-S * 1.3} 0Q0 0 0 ${-S * 1.3}Z" fill="${c}"/><circle r="${(S * .26).toFixed(2)}" fill="#fff"/>`;
   let h = `<defs>
-   <radialGradient id="nb1"><stop offset="0" stop-color="#ff8fab" stop-opacity=".38"/><stop offset=".55" stop-color="#c86aa0" stop-opacity=".12"/><stop offset="1" stop-color="#c86aa0" stop-opacity="0"/></radialGradient>
-   <radialGradient id="nb2"><stop offset="0" stop-color="#9fb8ff" stop-opacity=".22"/><stop offset="1" stop-color="#9fb8ff" stop-opacity="0"/></radialGradient>
-   <radialGradient id="halo"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".25" stop-color="#ffd1dc" stop-opacity=".45"/><stop offset="1" stop-color="#ff8fab" stop-opacity="0"/></radialGradient>
-   <linearGradient id="hs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd1dc"/><stop offset=".6" stop-color="#ffb3c8"/><stop offset="1" stop-color="#b9c8ff"/></linearGradient>
-   <filter id="cg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation=".45"/></filter>
+   <radialGradient id="nb1"><stop offset="0" stop-color="#ff8fab" stop-opacity=".34"/><stop offset=".6" stop-color="#c86aa0" stop-opacity=".1"/><stop offset="1" stop-color="#c86aa0" stop-opacity="0"/></radialGradient>
+   <radialGradient id="nb2"><stop offset="0" stop-color="#9fb8ff" stop-opacity=".2"/><stop offset="1" stop-color="#9fb8ff" stop-opacity="0"/></radialGradient>
+   <radialGradient id="halo"><stop offset="0" stop-color="#fff" stop-opacity=".85"/><stop offset=".25" stop-color="#ffd1dc" stop-opacity=".4"/><stop offset="1" stop-color="#ff8fab" stop-opacity="0"/></radialGradient>
+   <linearGradient id="hs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd1dc"/><stop offset=".55" stop-color="#ffb3c8"/><stop offset="1" stop-color="#b9c8ff"/></linearGradient>
+   <filter id="cg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation=".5"/></filter>
+   <filter id="hg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.6"/></filter>
   </defs>
-  <ellipse class="neb" rx="21" ry="18" cy="2" fill="url(#nb1)"/><ellipse class="neb" style="animation-delay:-3s" rx="13" ry="10" cx="6" cy="-4" fill="url(#nb2)"/>`;
+  <path class="neb" d="${heart}" fill="url(#nb1)" filter="url(#hg)" opacity=".9"/>
+  <ellipse class="neb" style="animation-delay:-3s" rx="12" ry="9" cx="7" cy="-5" fill="url(#nb2)"/>`;
   /* poussière d'étoiles, plus dense à l'intérieur du cœur */
-  for (let i = 0; i < 70; i++) {
-    const q = f(rnd() * 2 * Math.PI), k = Math.sqrt(rnd()) * 1.15, x = q[0] * k + (rnd() - .5) * 3, y = q[1] * k + 2 * (1 - k) + (rnd() - .5) * 3;
-    h += `<circle class="sp" style="animation-delay:-${(rnd() * 3).toFixed(1)}s;animation-duration:${(2.4 + rnd() * 2.5).toFixed(1)}s" cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${(.06 + rnd() * .14).toFixed(2)}" fill="${rnd() > .7 ? '#ffd1dc' : '#fff'}" opacity="${(.25 + rnd() * .6).toFixed(2)}"/>`;
+  for (let i = 0; i < 80; i++) {
+    const q = f(rnd() * 2 * Math.PI), k = Math.sqrt(rnd()) * 1.18, x = q[0] * k + (rnd() - .5) * 3, y = q[1] * k + 2 * (1 - k) + (rnd() - .5) * 3;
+    h += `<circle class="sp" style="animation-delay:-${(rnd() * 3).toFixed(1)}s;animation-duration:${(2.4 + rnd() * 2.5).toFixed(1)}s" cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${(.05 + rnd() * .13).toFixed(2)}" fill="${rnd() > .7 ? '#ffd1dc' : '#fff'}" opacity="${(.25 + rnd() * .6).toFixed(2)}"/>`;
   }
+  /* petite constellation compagne, en haut à gauche, et deux étoiles isolées */
+  const C = [[-22.5, -12.5, .5], [-19.2, -17.4, .75], [-14.5, -19, .5], [-12.5, -15.2, .6]];
+  h += `<path class="cl" pathLength="1" d="M${C.map(c => c[0] + ' ' + c[1]).join('L')}" fill="none" stroke="#ffd1dc" stroke-width=".1" stroke-dasharray=".5 .5" opacity=".5"/>`;
+  C.concat([[21.5, 15, .55], [23, -2.5, .4]]).forEach((c, i) => { h += `<g transform="translate(${c[0]} ${c[1]})"><g class="sp" style="animation-delay:-${(i * .7).toFixed(1)}s">${star(c[2], '#fff')}</g></g>`; });
   const line = `M${P.map(p => p[0].toFixed(2) + ' ' + p[1].toFixed(2)).join('L')}Z`;
-  h += `<path class="cl" pathLength="1" d="${line}" fill="none" stroke="#ff8fab" stroke-width=".7" opacity=".45" filter="url(#cg)"/>`;
+  const mid = `M${P[N / 2][0].toFixed(2)} ${P[N / 2][1].toFixed(2)}L${P[0][0].toFixed(2)} ${P[0][1].toFixed(2)}`;
+  h += `<path class="ct" d="${mid}" fill="none" stroke="#ffd1dc" stroke-width=".09" stroke-dasharray=".12 .5" stroke-linecap="round"/>`;
+  h += `<path class="cl" pathLength="1" d="${line}" fill="none" stroke="#ff8fab" stroke-width=".75" opacity=".42" filter="url(#cg)"/>`;
   h += `<path class="cl" pathLength="1" d="${line}" fill="none" stroke="url(#hs)" stroke-width=".2" stroke-linejoin="round" opacity=".95"/>`;
+  h += `<path class="tr" pathLength="1" d="${line}" fill="none" stroke="#fff" stroke-width=".34" stroke-linecap="round" stroke-dasharray=".05 .95" filter="url(#cg)"/>`;
   P.forEach((p, i) => {
-    const S = BIG[i] || .6 + rnd() * .35, fl = S > 1;
+    const S = BIG[i] || .55 + rnd() * .3, fl = S > 1, c = tint();
     h += `<g transform="translate(${p[0].toFixed(2)} ${p[1].toFixed(2)})"><g class="sp" style="animation-delay:-${(i * .41).toFixed(2)}s;animation-duration:${(2.6 + rnd() * 1.6).toFixed(1)}s">
-      <circle r="${(S * 2.1).toFixed(2)}" fill="url(#halo)" opacity="${fl ? .75 : .5}"/>
-      ${fl ? `<path d="M0 ${-S * 3}L0 ${S * 3}M${-S * 3} 0L${S * 3} 0" stroke="#fff" stroke-width=".09" stroke-linecap="round" opacity=".85"/><path d="M${-S} ${-S}L${S} ${S}M${S} ${-S}L${-S} ${S}" stroke="#ffd1dc" stroke-width=".06" opacity=".6"/>` : ''}
-      <path d="M0 ${-S * 1.25}Q0 0 ${S * 1.25} 0Q0 0 0 ${S * 1.25}Q0 0 ${-S * 1.25} 0Q0 0 0 ${-S * 1.25}Z" fill="#fff"/><circle r="${(S * .28).toFixed(2)}" fill="#fff"/></g></g>`;
+      <circle r="${(S * 2.2).toFixed(2)}" fill="url(#halo)" opacity="${fl ? .75 : .5}"/>
+      ${fl ? `<path d="M0 ${-S * 3.2}L0 ${S * 3.2}M${-S * 3.2} 0L${S * 3.2} 0" stroke="#fff" stroke-width=".09" stroke-linecap="round" opacity=".85"/><path d="M${-S} ${-S}L${S} ${S}M${S} ${-S}L${-S} ${S}" stroke="#ffd1dc" stroke-width=".06" opacity=".6"/>` : ''}
+      ${star(S, c)}</g></g>`;
   });
+  h += `<text class="ct" x="0" y="23.2" text-anchor="middle" fill="#ffd1dc" font-family="DM Mono,monospace" font-size="1.15">51°03′ N · 3°43′ E</text>`;
   document.getElementById('cs').innerHTML = h;
 })();
 
