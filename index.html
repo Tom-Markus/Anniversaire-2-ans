@@ -182,6 +182,13 @@ h1 em{font-size:1.1em;color:#ffb3c8}
 @keyframes shake{0%,100%{transform:rotate(-1.2deg)}15%{transform:translate(-7px,5px) rotate(-2.8deg)}35%{transform:translate(6px,-3px) rotate(.6deg)}60%{transform:translate(-3px,2px) rotate(-1.9deg)}}
 .tear .stub{transform:translate(34px,28px) rotate(9deg);border-radius:16px}
 .tear .tmain{border-radius:16px}
+/* réalisme du billet : reflet du papier, pli, perforation, micro-texte de sécurité */
+.tmain:before,.stub:after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none}
+.tmain:before{z-index:0}
+.tmain:before{border-radius:inherit;background:linear-gradient(104deg,#fff0 14%,#ffffff70 26%,#fff0 40%),linear-gradient(90deg,#0000 31.8%,#8a4a6a12 32.1%,#ffffff55 32.5%,#0000 33.6%),linear-gradient(#0000 70%,#c9809e14);box-shadow:inset 0 0 38px #c9809e24,inset 0 -2px 0 #fff}
+.stub:after{border-radius:inherit;background:linear-gradient(112deg,#fff0 20%,#ffffff1c 30%,#fff0 40%),linear-gradient(#ffffff0d,#0000 30%);box-shadow:inset 0 0 40px #0b113080}
+.stub:before{content:"";position:absolute;left:0;top:18px;bottom:18px;width:7px;z-index:3;pointer-events:none;background:radial-gradient(circle at 0 50%,#150f45 0 3px,#0000 3.6px) 0 0/7px 11px repeat-y}
+.mp{position:absolute;left:2.4rem;right:2rem;bottom:.42rem;z-index:1;overflow:hidden;white-space:nowrap;font-family:'DM Mono',monospace;font-size:.4rem;letter-spacing:.32em;color:#9a5a7a73;pointer-events:none}
 .hb{position:absolute;z-index:60;pointer-events:none;font-style:normal;animation:fly 1.6s cubic-bezier(.2,.7,.3,1) forwards}
 @keyframes fly{to{transform:translate(var(--x),calc(var(--y) + 170px)) rotate(var(--r));opacity:0}}
 #hint{text-align:center;margin-top:3.6rem;color:var(--blush)}
@@ -342,6 +349,7 @@ body.dev .ph small{display:block}
  .stub{border-radius:0 0 16px 16px;-webkit-mask:radial-gradient(circle 13px at 0 0,#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle 13px at 100% 0,#0000 97%,#000) right/51% 100% no-repeat;
   mask:radial-gradient(circle 13px at 0 0,#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle 13px at 100% 0,#0000 97%,#000) right/51% 100% no-repeat}
  .tear .stub{transform:translate(0,26px) rotate(-3deg);border-radius:16px}.tear .tmain{border-radius:16px}
+ .stub:before{left:18px;right:18px;top:0;bottom:auto;width:auto;height:7px;background:radial-gradient(circle at 50% 0,#150f45 0 3px,#0000 3.6px) 0 0/11px 7px repeat-x}.mp{left:1.7rem;right:1.5rem}
  .facts{grid-template-columns:1fr 1fr}.facts .w{grid-column:1/-1}.hd{font-size:.64rem;letter-spacing:.1em}.hd svg{display:none}
  .paper{font-size:1.15rem;padding:2.6rem 1.5rem 2rem 1.7rem}
 }
@@ -472,6 +480,7 @@ body.dev .ph small{display:block}
      <p class="tno mono"><span>Aller-retour · 2 voyageurs</span><span>Tarif : <b>offert avec amour</b></span><span>N° 2410·2026·♥</span><span>Valable toute la vie</span></p>
      <div class="qr" id="qr" aria-hidden="true"></div>
     </div>
+    <div class="mp" aria-hidden="true">BXL–GND ♥ NOS 2 ANS ♥ VALABLE TOUTE LA VIE ♥ BXL–GND ♥ NOS 2 ANS ♥ VALABLE TOUTE LA VIE ♥ BXL–GND ♥ NOS 2 ANS ♥ VALABLE TOUTE LA VIE ♥ BXL–GND ♥ NOS 2 ANS ♥ VALABLE TOUTE LA VIE ♥ BXL–GND ♥ NOS 2 ANS ♥ VALABLE TOUTE LA VIE ♥ BXL–GND ♥ NOS 2 ANS ♥ VALABLE TOUTE LA VIE ♥ </div>
    </div>
    <div class="stub">
     <div class="holo" aria-hidden="true">♥</div>
