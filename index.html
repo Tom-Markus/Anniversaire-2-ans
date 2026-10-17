@@ -19,7 +19,7 @@
 html{scroll-behavior:smooth}
 body{background:var(--night);color:var(--cream);font-family:'Fraunces',serif;font-weight:400;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 body.lock{overflow:hidden;height:100svh}
-.mono,.chips button{font-family:'DM Mono',monospace;font-weight:500;letter-spacing:.15em;text-transform:uppercase;font-size:.78rem}
+.mono{font-family:'DM Mono',monospace;font-weight:500;letter-spacing:.15em;text-transform:uppercase;font-size:.78rem}
 .lbl:before{content:"";display:inline-block;width:34px;height:1px;background:currentColor;vertical-align:middle;margin-right:.8rem}
 em{font-style:italic;font-weight:600;color:var(--rose)}
 section{position:relative;padding:15vh 6vw}
@@ -191,11 +191,8 @@ h1 em{font-size:1.1em;color:#ffb3c8}
 #faire:before,#faire:after{content:"";position:absolute;left:0;right:0;height:24vh;pointer-events:none}
 #faire:before{top:0;background:linear-gradient(#0b1130,#3a1d6e 30%,#c9809e88 68%,#fff4ef00)}
 #faire:after{bottom:0;background:linear-gradient(#fff4ef00,#c9809e88 32%,#2b1d5f 72%,#0b1130)}
-#faire .lbl,#faire h2 em,.act .mono{color:var(--red)}
-#faire .lead{max-width:56ch;margin:-1.6rem 0 2.2rem;font-size:1.12rem;color:#2c356f}
-.chips{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:3.4rem}
-.chips button{background:none;border:1.5px solid var(--navy);color:var(--navy);padding:.65rem 1.2rem;border-radius:99px;cursor:pointer;transition:.2s}
-.chips button.on,.chips button:hover{background:var(--red);border-color:var(--red);color:#fff}
+#faire .lbl,#faire h2 em{color:var(--red)}
+#faire .lead{max-width:56ch;margin:-1.6rem 0 3.4rem;font-size:1.12rem;color:#2c356f}
 .acts{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:3.4rem 2rem}
 .act{opacity:0;transform:translateY(26px);transition:.8s}
 .act.in{opacity:1;transform:none}
@@ -509,9 +506,6 @@ body.dev .ph small{display:block}
   <p class="mono lbl">Les choses à voir</p>
   <h2>À toi de <em>choisir.</em></h2>
   <p class="lead">Choisis ce qui te fait le plus envie, mon cœur, en mettant un petit like aux images que tu aimes, et puis valide en dessous de la zone avec les images. Tu verras une jolie petite carte apparaître. Je t’aime fort.</p>
-  <div class="chips" id="chips">
-   <button class="on" data-t="*" aria-pressed="true">Tout</button><button data-t="Voir" aria-pressed="false">Voir</button><button data-t="Flâner" aria-pressed="false">Flâner</button><button data-t="Goûter" aria-pressed="false">Goûter</button>
-  </div>
   <div class="acts" id="acts"></div>
   <div class="valid" id="validbox">
    <p class="mono">Tes coups de cœur sont choisis ?</p>
@@ -628,14 +622,13 @@ const CONFIG = {
 
 /* [fichier sans .jpg, catégorie, titre, texte, latitude, longitude] → photos dans images/ */
 const ACTS = [
- ["graslei","Flâner","Graslei & Korenlei","Les anciennes maisons des guildes, pignons à gradins, face à face sur l’eau. Le cœur de la carte postale.",51.0549,3.7219],
- ["gravensteen","Voir","Le Gravensteen","Un vrai château des comtes de Flandre, en plein centre. Remparts, salles et vue sur les toits.",51.0573,3.7208],
- ["saint-bavon","Voir","Cathédrale Saint-Bavon","Abrite l’Agneau mystique des frères Van Eyck, l’un des plus célèbres tableaux du monde.",51.0530,3.7270],
- ["belfort","Voir","Le Beffroi","Une tour médiévale classée à l’Unesco, d’où l’on domine toute la ville.",51.0537,3.7248],
- ["patershol","Flâner","Le Patershol","Ruelles pavées du Moyen Âge, aujourd’hui pleines de petits restaurants : parfait pour déjeuner ou flâner.",51.0588,3.7243],
- ["sint-michielsbrug","Flâner","Le pont Saint-Michel","Le meilleur point de vue sur les trois tours de la ville, surtout au coucher du soleil.",51.0538,3.7213],
- ["vrijdagmarkt","Goûter","Vrijdagmarkt & Dulle Griet","Une grande place animée. Au bar Dulle Griet, on laisse une chaussure en gage pour un énorme verre de bière.",51.0578,3.7256],
- ["cuberdons","Goûter","Cuberdons & moutarde","Les « neuzen » violets, bonbons typiques de Gand, et la moutarde Tierenteyn-Verlent.",51.0562,3.7226]
+ ["graslei","Flâner","Graslei & Korenlei","Les anciennes maisons des guildes, pignons à gradins, face à face sur l’eau. Le cœur de la carte postale.",51.0548,3.7205],
+ ["gravensteen","Voir","Le Gravensteen","Un vrai château des comtes de Flandre, en plein centre. Remparts, salles et vue sur les toits.",51.0572,3.7207],
+ ["saint-bavon","Voir","Cathédrale Saint-Bavon","Abrite l’Agneau mystique des frères Van Eyck, l’un des plus célèbres tableaux du monde.",51.0529,3.7270],
+ ["belfort","Voir","Le Beffroi","Une tour médiévale classée à l’Unesco, d’où l’on domine toute la ville.",51.0536,3.7247],
+ ["sint-michielsbrug","Flâner","Le pont Saint-Michel","Le meilleur point de vue sur les trois tours de la ville, surtout au coucher du soleil.",51.0539,3.7206],
+ ["saint-nicolas","Voir","L’église Saint-Nicolas","Une église gothique en pierre grise sur la Korenmarkt, à deux pas du pont Saint-Michel. Elle se détache au pied du Beffroi.",51.0539,3.7228],
+ ["vrijdagmarkt","Goûter","Vrijdagmarkt & Dulle Griet","Une grande place animée. Au bar Dulle Griet, on laisse une chaussure en gage pour un énorme verre de bière.",51.0571,3.7257]
 ];
 const ST = ["Gare de Gand-Saint-Pierre", 51.0357, 3.7106];
 
@@ -853,7 +846,7 @@ let favs = []; try { favs = JSON.parse(localStorage.getItem('favs') || '[]'); } 
 favs = favs.filter(id => ACTS.some(a => a[0] === id));
 const grid = document.getElementById('acts'), pill = document.getElementById('pill'), carte = document.getElementById('carte'),
   vbtn = document.getElementById('valider'), vmsg = document.getElementById('vmsg'), mlist = document.getElementById('mlist'), gmr = document.getElementById('gmr');
-grid.innerHTML = ACTS.map((a, i) => `<article class="act" data-t="${a[1]}"><div class="fr" style="--g:linear-gradient(160deg,${GR[i % 4][0]},${GR[i % 4][1]})"><div class="ph"><span>${a[2]}<small>images/${a[0]}.jpg</small></span><img src="images/${a[0]}.jpg" alt="${a[2]}" loading="lazy" onerror="this.remove()"></div><button class="fav${favs.includes(a[0]) ? ' on' : ''}" data-id="${a[0]}" aria-pressed="${favs.includes(a[0])}" aria-label="Coup de cœur : ${a[2]}">♥</button></div><p class="mono">${a[1]}</p><h3>${a[2]}</h3><p>${a[3]}</p></article>`).join('');
+grid.innerHTML = ACTS.map((a, i) => `<article class="act"><div class="fr" style="--g:linear-gradient(160deg,${GR[i % 4][0]},${GR[i % 4][1]})"><div class="ph"><span>${a[2]}<small>images/${a[0]}.jpg</small></span><img src="images/${a[0]}.jpg" alt="${a[2]}" loading="lazy" onerror="this.remove()"></div><button class="fav${favs.includes(a[0]) ? ' on' : ''}" data-id="${a[0]}" aria-pressed="${favs.includes(a[0])}" aria-label="Coup de cœur : ${a[2]}">♥</button></div><h3>${a[2]}</h3><p>${a[3]}</p></article>`).join('');
 
 /* pastille « coups de cœur » : visible seulement dans la section, et pas à côté du bouton */
 let inFaire = false, btnVis = false;
@@ -897,7 +890,7 @@ function fit(v) {
 function renderMap() {
   curSel = routeOrder(ACTS.filter(a => favs.includes(a[0])));
   mlist.innerHTML = `<li data-i="-1" tabindex="0"><b class="st">G</b><div><strong>${ST[0]}</strong><small class="mono">Arrivée</small><a href="${gmUrl(ST[1], ST[2])}" target="_blank" rel="noopener">Ouvrir dans Maps</a></div></li>` +
-    curSel.map((a, i) => `<li data-i="${i}" tabindex="0"><b>${i + 1}</b><div><strong>${a[2]}</strong><small class="mono">${a[1]}</small><a href="${gmUrl(a[4], a[5])}" target="_blank" rel="noopener">Ouvrir dans Maps</a></div></li>`).join('');
+    curSel.map((a, i) => `<li data-i="${i}" tabindex="0"><b>${i + 1}</b><div><strong>${a[2]}</strong><a href="${gmUrl(a[4], a[5])}" target="_blank" rel="noopener">Ouvrir dans Maps</a></div></li>`).join('');
   if (curSel.length) {
     const last = curSel[curSel.length - 1], mid = curSel.slice(0, -1).map(a => a[4] + ',' + a[5]).join('%7C');
     gmr.href = `https://www.google.com/maps/dir/?api=1&origin=${ST[1]},${ST[2]}&destination=${last[4]},${last[5]}${mid ? '&waypoints=' + mid : ''}&travelmode=walking`;
@@ -967,11 +960,6 @@ vbtn.onclick = () => {
   setTimeout(() => carte.scrollIntoView({ behavior: 'smooth' }), 120);
 };
 pill.onclick = () => vbtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-document.getElementById('chips').onclick = e => {
-  const c = e.target.closest('button'); if (!c) return;
-  document.querySelectorAll('#chips button').forEach(b => b.setAttribute('aria-pressed', b.classList.toggle('on', b === c)));
-  grid.querySelectorAll('.act').forEach(a => a.style.display = (c.dataset.t === '*' || a.dataset.t === c.dataset.t) ? '' : 'none');
-};
 
 /* ===== jours ensemble : calcul par jours calendaires (insensible à l'heure et au changement d'heure), remis à jour toutes les minutes ===== */
 const dd = document.getElementById('dd'), dsub = document.getElementById('dsub');
