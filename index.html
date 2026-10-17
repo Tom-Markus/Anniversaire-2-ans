@@ -629,6 +629,8 @@ const ACTS = [
  ["sint-michielsbrug","Flâner","Le pont Saint-Michel","Le meilleur point de vue sur les trois tours de la ville, surtout au coucher du soleil.",51.0538,3.7213],
  ["vrijdagmarkt","Goûter","Vrijdagmarkt & Dulle Griet","Une grande place animée. Au bar Dulle Griet, on laisse une chaussure en gage pour un énorme verre de bière.",51.0578,3.7256]
 ];
+/* contour du centre historique (latitude, longitude), dans le sens des aiguilles d'une montre depuis le nord-ouest */
+const CENTRE = [[51.0608,3.7195],[51.0612,3.7240],[51.0603,3.7285],[51.0575,3.7305],[51.0540,3.7300],[51.0505,3.7285],[51.0482,3.7250],[51.0486,3.7212],[51.0515,3.7190],[51.0550,3.7183],[51.0575,3.7180]];
 const ST = ["Gare de Gand-Saint-Pierre", 51.0357, 3.7106];
 
 document.querySelectorAll('[data-k]').forEach(e => e.textContent = CONFIG[e.dataset.k]);
@@ -915,6 +917,8 @@ function drawMap() {
     }));
     const wp = map.createPane('wash'); wp.style.zIndex = 250; wp.style.mixBlendMode = 'multiply'; wp.style.pointerEvents = 'none';
     L.rectangle([[50.9, 3.5], [51.2, 3.95]], { pane: 'wash', stroke: false, fillColor: '#ff8fab', fillOpacity: .17, interactive: false }).addTo(map);
+    /* contour léger du centre le plus visité : tracé à la main, à affiner sur les vraies rues */
+    L.polygon(CENTRE, { color: '#c8183f', weight: 1.6, opacity: .55, dashArray: '2 6', lineCap: 'round', fillColor: '#c8183f', fillOpacity: .05, interactive: false, smoothFactor: 1 }).addTo(map);
     map.on('focus', () => map.scrollWheelZoom.enable()); map.on('blur', () => map.scrollWheelZoom.disable());
     layer = L.layerGroup().addTo(map);
   }
