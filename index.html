@@ -49,9 +49,9 @@ button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:2px solid 
 .edge:before{content:"";position:absolute;left:0;right:0;bottom:0;height:7px;background:repeating-linear-gradient(0deg,#fffaf0 0 2px,#e2d2b8 2px 3px)}
 .rib{position:absolute;bottom:-12%;right:26%;width:6.5%;height:17%;background:linear-gradient(90deg,#a3123a,#e23a62,#a3123a);
  clip-path:polygon(0 0,100% 0,100% 100%,50% 84%,0 100%);transform:translateZ(-4px)}
-.ruled{background:linear-gradient(#0000 calc(var(--lh) - 1px),#e6c6d0 calc(var(--lh) - 1px)) 0 calc(var(--lh)*1.2)/100% var(--lh),#fff9f0}
+.ruled{background:linear-gradient(#0000 calc(var(--lh) - 1px),#e6c6d0 calc(var(--lh) - 1px)) 0 calc(var(--lh)*1.2)/100% var(--lh),var(--paper) 0 0/230px 230px,linear-gradient(90deg,#f3e3d0,#fff9f0 22%),#fff9f0}
 .pgr2{position:absolute;inset:0;border-radius:2px 7px 7px 2px;transform:translateZ(-1px);box-shadow:inset 14px 0 20px -12px #0005;overflow:hidden}
-.pgr2:after,.lf.b:after{content:"♥";position:absolute;inset:0;display:grid;place-items:center;font-size:calc(var(--w)*.42);color:#ffd5df;opacity:.55}
+.pgr2:after,.lf.b:after{content:"♥";position:absolute;inset:0;display:grid;place-items:center;font-size:calc(var(--w)*.34);color:#ffc2d1;opacity:.3}
 .leaf{position:absolute;inset:0;transform-origin:left center;transform-style:preserve-3d;transform:translateZ(1px);transition:transform 1.7s cubic-bezier(.5,.05,.25,1)}
 .book.turn .leaf{transform:translateZ(3px) rotateY(-179deg)}
 .lf{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
@@ -63,6 +63,14 @@ button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:2px solid 
 .pg h3{font-size:calc(var(--lh)*1.8);font-style:italic;font-weight:600;line-height:calc(var(--lh)*2);color:var(--red)}
 .pg .pl{font-size:calc(var(--lh)*.78);line-height:var(--lh);font-style:italic;opacity:0}
 .book.open .pg .pl{animation:wr 1s var(--d) both}
+.pg .pr{display:flex;justify-content:space-between;gap:.6em;margin-top:var(--lh);font-style:normal}
+.pg .pr+.pr{margin-top:0}
+.pg .pr span{font-family:'DM Mono',monospace;font-weight:500;letter-spacing:.16em;text-transform:uppercase;font-size:calc(var(--lh)*.36);color:var(--red);align-self:center}
+.pg .pr b{font-weight:600;font-style:italic;color:var(--navy)}
+.pg .pn{margin-top:var(--lh);color:var(--rose);text-align:center;font-size:calc(var(--lh)*1.1)}
+.lf.f:after{content:"1";position:absolute;right:9%;bottom:calc(var(--lh)*.5);font-family:'DM Mono',monospace;font-size:calc(var(--lh)*.34);color:#b98a9a}
+.pgr2:before{content:"3";position:absolute;right:9%;bottom:calc(var(--lh)*.5);font-family:'DM Mono',monospace;font-size:calc(var(--lh)*.34);color:#b98a9a;z-index:1}
+.lf.b:before{content:"2";position:absolute;left:9%;bottom:calc(var(--lh)*.5);font-family:'DM Mono',monospace;font-size:calc(var(--lh)*.34);color:#b98a9a;z-index:1}
 @keyframes wr{from{opacity:0;clip-path:inset(0 100% 0 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
 .cover{position:absolute;inset:0;transform-origin:left center;transform-style:preserve-3d;transform:translateZ(2px);transition:transform 1.7s cubic-bezier(.55,.05,.2,1)}
 .book.open .cover{transform:translateZ(2px) rotateY(-180deg);transition-delay:.35s}
@@ -72,17 +80,26 @@ button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:2px solid 
 .band{position:absolute;top:-1px;bottom:-1px;right:12%;width:5.5%;background:linear-gradient(90deg,#8f0f2f,#e23a62 45%,#ff6b8e 52%,#8f0f2f);
  box-shadow:0 0 10px #000b,inset 0 0 0 1px #0003;transition:transform .9s cubic-bezier(.5,0,.2,1),opacity .7s}
 .book.open .band{transform:translateX(70px);opacity:0}
-.inside{transform:rotateY(180deg);border-radius:10px 3px 3px 10px;display:grid;place-content:center;padding:12%;text-align:center;color:var(--navy);
- background:radial-gradient(#ffb3c444 1.5px,#0000 2.2px) 0 0/15px 15px,linear-gradient(90deg,#f1e0cf,#fff6ee 45%);box-shadow:inset -14px 0 20px -12px #0005}
-.bp{border:1.5px solid #e08fa6;outline:1px solid #e08fa655;outline-offset:4px;padding:16% 8%;background:#fffaf4;box-shadow:0 0 0 7px #fffaf4}
-.bp small{font-family:'DM Mono',monospace;font-weight:500;letter-spacing:.2em;text-transform:uppercase;font-size:calc(var(--w)*.03)}
+.inside{transform:rotateY(180deg);border-radius:10px 3px 3px 10px;display:grid;place-content:center;padding:11%;text-align:center;color:var(--navy);
+ background:radial-gradient(#ffb3c455 1.4px,#0000 2.1px) 0 0/14px 14px,var(--paper) 0 0/230px 230px,linear-gradient(90deg,#efdcc8,#fff4ea 40%,#fbe9e2);box-shadow:inset -14px 0 20px -12px #0005,inset 0 0 40px #c9809e22}
+.bp{position:relative;border:1.5px solid #d9778f;padding:13% 7% 11%;background:var(--paper) 0 0/230px 230px,#fffaf4;box-shadow:0 0 0 6px #fffaf4,0 0 0 7px #e08fa688,0 6px 18px #7a3a5a22}
+.bp:before{content:"";position:absolute;inset:5px;border:1px solid #e08fa666;pointer-events:none}
+.bp .ex{display:block;color:var(--red);letter-spacing:.34em;margin-bottom:.9em}
+.bp .or{display:block;color:#d9778f;font-size:calc(var(--w)*.04);letter-spacing:.5em;margin:.2em 0 1.1em;text-indent:.5em}
+.bp em span{display:inline;margin:0;font-size:inherit;color:inherit}
+.bp em{display:block;font-family:'DM Mono',monospace;font-style:normal;font-weight:500;letter-spacing:.22em;text-transform:uppercase;font-size:calc(var(--w)*.027);color:#9a5a7a;margin-top:1.4em}
+.bp small{display:block;font-family:'DM Mono',monospace;font-weight:500;letter-spacing:.2em;text-transform:uppercase;font-size:calc(var(--w)*.03);line-height:1.5}
 .bp b{display:block;font-size:calc(var(--w)*.22);font-style:italic;font-weight:600;color:var(--red);line-height:1.1;margin:.15em 0}
-.bp i{display:block;font-size:calc(var(--w)*.052);line-height:1.4}
+.bp i{display:block;font-size:calc(var(--w)*.05);line-height:1.45;margin-top:.5em}
 .bp span{display:block;color:var(--rose);margin-top:.5em;font-size:calc(var(--w)*.06)}
 #intro .hint{position:absolute;bottom:7vh;left:0;right:0;text-align:center;color:var(--blush);animation:pls 2.6s infinite;transition:opacity .5s}
 #intro .hint.gone{opacity:0;animation:none}
 @keyframes pls{50%{opacity:.45}}
-@media(max-width:760px){.stage{--sx:0px}}
+/* sur téléphone : le carnet ouvert est réduit pour que les deux pages tiennent à l'écran (--k posé par le script) */
+@media(max-width:760px){
+ .book.open{transform:translateX(calc(var(--sx)*var(--k,1))) rotateX(0deg) rotateY(0deg) scale(var(--k,1))}
+ .book.enter{transform:translateX(calc(var(--sx)*var(--k,1)*1.5)) rotateX(0deg) rotateY(0deg) scale(calc(var(--k,1)*1.5))}
+}
 
 /* ===== ACCUEIL ===== */
 .hero{position:relative;min-height:92svh;overflow:hidden;display:grid;align-content:center;padding:16vh 6vw 14vh;
@@ -386,6 +403,9 @@ body.dev .ph small{display:block}
      <h3>Gand</h3>
      <p class="pl" style="--d:2s">Ouvre pour découvrir</p>
      <p class="pl" style="--d:2.7s">notre journée ♥</p>
+     <p class="pl pr" style="--d:3s"><span class="mono">Départ</span><b data-k="trainTime"></b></p>
+     <p class="pl pr" style="--d:3.35s"><span class="mono">Retour</span><b data-k="returnTime"></b></p>
+     <p class="pl pn" style="--d:3.7s">♥</p>
     </div></div>
     <div class="lf b ruled"></div>
    </div>
@@ -427,7 +447,7 @@ body.dev .ph small{display:block}
      <i class="band"></i>
     </div>
     <div class="face inside">
-     <div class="bp"><small>Ce carnet appartient à</small><b data-k="her"></b><i>mon cœur, ma femme,<br>mon amoureuse</i><span>♥</span></div>
+     <div class="bp"><small class="ex">Ex-libris</small><span class="or" aria-hidden="true">✦ ♥ ✦</span><small>Ce carnet appartient à</small><b data-k="her"></b><i>mon cœur,<br>ma femme,<br>mon amoureuse</i><span>♥</span><em>Gand · <span data-k="stampDate"></span></em></div>
     </div>
    </div>
   </div></div>
@@ -687,6 +707,7 @@ const intro = document.getElementById('intro'), stage = document.getElementById(
 let started = false;
 function openBook() {
   if (started) return; started = true;
+  stage.style.setProperty('--k', Math.min(1, innerWidth * .94 / (2 * stage.offsetWidth)).toFixed(3));
   stage.classList.add('started'); book.classList.add('open'); intro.querySelector('.hint').classList.add('gone');
   setTimeout(() => book.classList.add('turn'), 4500 * T);
   setTimeout(() => book.classList.add('enter'), 5300 * T);
