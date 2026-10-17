@@ -10,6 +10,10 @@ Tout tient dans `index.html`.
 - **Visites** : tableau `ACTS` (identifiant, catégorie, titre, texte, latitude, longitude).
 - **Photos** : déposer `images/<identifiant>.jpg` (ex. `images/graslei.jpg`). Sans photo, un dégradé s'affiche.
 
+## QR code du billet
+
+C'est un vrai QR code (version 6, correction M, zone centrale libre pour le cœur) qui ouvre la photo de cœur. Pour changer le lien, il faut régénérer le chemin SVG dans le script, juste après le commentaire « vrai code QR » (bibliothèque Python `qrcode`).
+
 ## Raccourcis d'URL
 
 - `?skip` : saute l'animation du carnet.
